@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spark Performance Lessons — Real Production Stories</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    body{background:#fffdf4;color:#2b2b2b;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    .navy{background:#fff9db;border-bottom:1px solid rgba(0,0,0,.06)}
+    .brand{font-weight:700;color:#1f1f1f;text-decoration:none}
+    .cardx{background:#fff;border:0;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.05)}
+    .muted{color:#6b6b6b}
+    .title{font-weight:750}
+    .accent{color:#c99700}
+    .line{height:1px;background:rgba(0,0,0,.08)}
+    a{color:#c99700}
+  </style>
+</head>
+
+<body>
+
+<header class="navy py-3">
+  <div class="container d-flex justify-content-between">
+    <a class="brand" href="../../index.html">← Prachi</a>
+    <span class="muted">Spark • Real Lessons • Production Life</span>
+  </div>
+</header>
+
+<main class="container my-5">
+  <div class="cardx p-4 p-md-5">
+
+    <p class="muted mb-2">Blog • Prachi Baranwal</p>
+
+    <h1 class="title mb-3">
+      Spark Performance Lessons — <span class="accent">Mistakes & Fixes</span> from Real Projects
+    </h1>
+
+    <p class="muted mb-4">
+      Things Spark taught me… mostly the hard way.
+    </p>
+
+    <div class="line my-4"></div>
+
+    <p>
+      When I started working with Spark, I believed one simple thing:
+      <br><br>
+      <strong>“Spark is fast.”</strong>
+    </p>
+
+    <p>
+      And yes — it is.
+      <br>
+      But only if you respect it.
+    </p>
+
+    <h5 class="mt-4 title">Lesson 1: Reading Too Much Data is Silent Damage</h5>
+
+    <p>
+      One of my early pipelines was slow.
+      Very slow.
+    </p>
+
+    <p>
+      I checked cluster size.
+      Increased workers.
+      Increased memory.
+    </p>
+
+    <p>
+      Nothing improved.
+    </p>
+
+    <p>
+      Then I realized:
+    </p>
+
+    <ul>
+      <li>I was reading full history</li>
+      <li>Not filtering early</li>
+      <li>Selecting every column “just in case”</li>
+    </ul>
+
+    <p>
+      Spark wasn’t slow.
+      My logic was heavy.
+    </p>
+
+    <p>
+      After filtering early and selecting only needed columns —
+      runtime dropped significantly.
+    </p>
+
+    <h5 class="mt-4 title">Lesson 2: Shuffle is Expensive</h5>
+
+    <p>
+      The first time I saw a job stuck at shuffle stage…
+      I thought something was broken.
+    </p>
+
+    <p>
+      It wasn’t broken.
+      It was shuffling too much data.
+    </p>
+
+    <p>
+      Big joins.
+      No partition strategy.
+      Uneven data distribution.
+    </p>
+
+    <p>
+      That’s when I learned:
+    </p>
+
+    <ul>
+      <li>Join after filtering</li>
+      <li>Avoid unnecessary wide transformations</li>
+      <li>Think about how data is distributed</li>
+    </ul>
+
+    <p>
+      Spark moves data across machines.
+      And moving data costs time.
+    </p>
+
+    <h5 class="mt-4 title">Lesson 3: Small Files = Big Problem</h5>
+
+    <p>
+      Everything looked fine…
+      until queries became slower over time.
+    </p>
+
+    <p>
+      Reason?
+    </p>
+
+    <p>
+      Too many small files.
+    </p>
+
+    <p>
+      That’s when I started using:
+    </p>
+
+    <ul>
+      <li><strong>OPTIMIZE</strong></li>
+      <li><strong>ZORDER</strong></li>
+    </ul>
+
+    <p>
+      ZORDER especially helped when queries filtered on specific columns like IDs.
+      It made reads much faster.
+    </p>
+
+    <p>
+      It wasn’t magic.
+      It was organizing data smarter.
+    </p>
+
+    <h5 class="mt-4 title">Lesson 4: Partitioning is a Double-Edged Sword</h5>
+
+    <p>
+      Partitioning can save your job…
+      or destroy performance.
+    </p>
+
+    <p>
+      Too many partitions?
+      Small files.
+    </p>
+
+    <p>
+      Too few partitions?
+      Uneven load.
+    </p>
+
+    <p>
+      I learned to choose partition columns carefully —
+      usually based on query pattern, not guesswork.
+    </p>
+
+    <h5 class="mt-4 title">Lesson 5: Bigger Cluster is Not Always the Answer</h5>
+
+    <p>
+      My first instinct:
+      “Increase cluster size.”
+    </p>
+
+    <p>
+      But performance tuning is about logic first.
+      Infrastructure later.
+    </p>
+
+    <p>
+      Clean transformations.
+      Simple joins.
+      Good incremental logic.
+    </p>
+
+    <p>
+      That improved more than adding workers.
+    </p>
+
+    <h5 class="mt-4 title">What Spark Really Taught Me</h5>
+
+    <p>
+      Spark is powerful.
+      But it forces you to think.
+    </p>
+
+    <p>
+      It rewards:
+    </p>
+
+    <ul>
+      <li>Simple logic</li>
+      <li>Clean transformations</li>
+      <li>Early filtering</li>
+      <li>Data-aware design</li>
+    </ul>
+
+    <p>
+      It punishes:
+    </p>
+
+    <ul>
+      <li>Lazy joins</li>
+      <li>Full-table scans</li>
+      <li>Ignoring file structure</li>
+      <li>Not understanding your own data</li>
+    </ul>
+
+    <div class="line my-4"></div>
+
+    <p class="mb-0">
+      Spark performance isn’t about tricks.
+      It’s about respecting how distributed systems work.
+      <br><br>
+      And honestly,
+      the best optimization is often just writing cleaner logic.
+    </p>
+
+  </div>
+
+  <p class="text-center mt-4 muted">
+    <a href="../../index.html">Back to Home</a>
+  </p>
+
+</main>
+
+</body>
+</html>

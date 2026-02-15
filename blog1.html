@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Optimizing Databricks Pipelines — Lessons from Production</title>
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <style>
+    body{background:#fffdf4;color:#2b2b2b;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    .navy{background:#fff9db;border-bottom:1px solid rgba(0,0,0,.06)}
+    .brand{font-weight:700;color:#1f1f1f;text-decoration:none}
+    .chip{display:inline-flex;gap:.4rem;align-items:center;padding:.35rem .7rem;border-radius:999px;background:#fff9db;border:1px solid rgba(0,0,0,.06);font-size:.85rem}
+    .cardx{background:#fff;border:0;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.05)}
+    .muted{color:#6b6b6b}
+    .title{font-weight:750}
+    .accent{color:#c99700}
+    .line{height:1px;background:rgba(0,0,0,.08)}
+    a{color:#c99700}
+    pre{background:#fff9db;padding:14px;border-radius:10px;font-size:0.9rem}
+  </style>
+</head>
+
+<body>
+  <header class="navy py-3">
+    <div class="container d-flex align-items-center justify-content-between">
+      <a class="brand" href="../../index.html">← Prachi</a>
+      <span class="chip">Databricks • Spark • Delta</span>
+    </div>
+  </header>
+
+  <main class="container my-5">
+    <div class="cardx p-4 p-md-5">
+      <p class="muted mb-2">Blog • Prachi Baranwal</p>
+      <h1 class="title mb-3">
+        Optimizing <span class="accent">Databricks Pipelines</span> — Lessons from Production
+      </h1>
+      <p class="muted mb-4">
+        What I actually learned after working on real pipelines for 2.5 years.
+      </p>
+
+      <div class="line my-4"></div>
+
+      <p>
+        When I first started building pipelines in Databricks, I thought:
+        <br>
+        <strong>“If the job runs successfully, we’re good.”</strong>
+      </p>
+
+      <p>
+        But production teaches you something different.
+        Running is not the same as running well.
+      </p>
+
+      <p>
+        Some jobs were slow.
+        Some were unstable.
+        Some worked fine — until one schema change broke everything.
+      </p>
+
+      <h5 class="mt-4 title">The First Big Realization</h5>
+
+      <p>
+        Most performance problems were not because Spark was slow.
+        They were because of how I designed the pipeline.
+      </p>
+
+      <ul>
+        <li>Reading too much data</li>
+        <li>Full loads instead of incremental</li>
+        <li>Bad partition strategy</li>
+        <li>Too many small files</li>
+        <li>Unnecessary shuffles during joins</li>
+      </ul>
+
+      <p>
+        Small design decisions were creating big slowdowns.
+      </p>
+
+      <h5 class="mt-4 title">What Actually Helped Me</h5>
+
+      <ul>
+        <li>
+          <strong>Incremental loads instead of full loads.</strong>
+          Processing only new or updated data reduced runtime a lot.
+        </li>
+
+        <li>
+          <strong>Filtering early.</strong>
+          Don’t join huge datasets before reducing them.
+        </li>
+
+        <li>
+          <strong>Selecting only required columns.</strong>
+          Extra columns increase memory usage.
+        </li>
+
+        <li>
+          <strong>OPTIMIZE on Delta tables.</strong>
+          This compacts small files and improves read performance.
+        </li>
+
+        <li>
+          <strong>Z-ORDER on frequently filtered columns.</strong>
+          If queries filter by member_id or date, Z-ORDER helps Spark skip unnecessary data.
+        </li>
+
+        <li>
+          <strong>Better partition thinking.</strong>
+          Partitioning by date or relevant business column improved query time.
+        </li>
+
+        <li>
+          <strong>Broadcast joins for small tables.</strong>
+          Instead of shuffling everything, broadcasting small reference tables saved time.
+        </li>
+
+        <li>
+          <strong>Caching only when reused.</strong>
+          If a dataset is used multiple times in one job, caching avoids recomputation.
+        </li>
+      </ul>
+
+      <h5 class="mt-4 title">Example from My Work</h5>
+
+      <p>
+        In one case, our queries always filtered by member_id and claim_date.
+        After running:
+      </p>
+
+<pre>
+OPTIMIZE claims_table
+ZORDER BY (member_id, claim_date);
+</pre>
+
+      <p>
+        Query performance improved noticeably.
+        It wasn’t dramatic magic — but it became stable and consistent.
+      </p>
+
+      <h5 class="mt-4 title">Small Files Problem</h5>
+
+      <p>
+        One hidden issue I faced was too many small files.
+        Auto Loader and frequent writes were creating tiny Delta files.
+      </p>
+
+      <p>
+        Running OPTIMIZE regularly helped reduce file count and improved read speed.
+      </p>
+
+      <h5 class="mt-4 title">Optimization Is Not Just Speed</h5>
+
+      <p>
+        In production, optimization means:
+      </p>
+
+      <ul>
+        <li>Stable jobs</li>
+        <li>Lower compute cost</li>
+        <li>Less surprise failures</li>
+        <li>Predictable performance</li>
+      </ul>
+
+      <p>
+        A fast job that fails randomly is not optimized.
+      </p>
+
+      <h5 class="mt-4 title">What 2.5 Years Taught Me</h5>
+
+      <p>
+        Data keeps changing.
+        Business rules change.
+        Schemas evolve.
+      </p>
+
+      <p>
+        So pipelines must be written in a way that handles change calmly.
+      </p>
+
+      <p>
+        Now I focus more on:
+      </p>
+
+      <ul>
+        <li>Clear structure</li>
+        <li>Incremental logic</li>
+        <li>Data quality checks</li>
+        <li>Monitoring runtime trends</li>
+        <li>Simple and readable transformations</li>
+      </ul>
+
+      <div class="line my-4"></div>
+
+      <p class="mb-0">
+        Optimization isn’t about complex code.
+        It’s about understanding how data is stored and read.
+        <br><br>
+        Sometimes one simple decision — like Z-ORDER or proper partitioning —
+        makes more impact than rewriting the whole pipeline.
+        <br><br>
+        After 2.5 years, I’ve learned this:
+        <strong>Simple design + smart tuning = peaceful production.</strong>
+      </p>
+    </div>
+
+    <p class="text-center mt-4 muted">
+      <a href="../../index.html">Back to Home</a>
+    </p>
+  </main>
+</body>
+</html>

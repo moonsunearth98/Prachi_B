@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Prachi Baranwal • Data Engineer</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<a href="blog1.html" style="text-decoration:none; color:inherit;">
+<a href="blog2.html" style="text-decoration:none; color:inherit;">
+<a href="blog3.html" style="text-decoration:none; color:inherit;"></a>
+
+<style>
+
+body {
+    background: #fffdf4;
+    font-family: 'Poppins', sans-serif;
+    color: #2b2b2b;
+}
+
+html {
+    font-size: 17px;
+}
+
+nav {
+    background: #fff9db;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.nav-link {
+    color: #555 !important;
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: #d4a017;
+    transition: 0.3s ease;
+}
+
+.nav-link:hover::after { width: 100%; }
+
+/* Yellow Hamburger */
+.navbar-toggler {
+    border: 2px solid #d4a017;
+    border-radius: 8px;
+}
+
+.navbar-toggler-icon {
+    background-image: none;
+    position: relative;
+    width: 24px;
+    height: 2px;
+    background: #d4a017;
+    display: inline-block;
+}
+
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+    content: "";
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background: #d4a017;
+    left: 0;
+}
+
+.navbar-toggler-icon::before { top: -7px; }
+.navbar-toggler-icon::after { top: 7px; }
+
+.hero {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-top: 70px;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url('img/download.jpg') center/cover no-repeat;
+    filter: blur(30px);
+    opacity: 0.45;
+    transform: scale(1.1);
+}
+
+
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255,236,179,0.88);
+}
+
+.hero > div { position: relative; z-index: 2; }
+
+.hero img {
+    width: 150px;
+    border-radius: 50%;
+    border: 5px solid #f4d35e;
+    margin-bottom: 20px;
+}
+
+.hero span.name { color: #c99700; }
+
+.resume-btn {
+    background: #f4d35e;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 30px;
+}
+
+.corner-img {
+    position: absolute;
+    bottom: 10px;   /* changed from top */
+    right: 28px;
+    width: 106px;
+    height: 106px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: 0.3s ease;
+}
+
+.blog-card:hover .corner-img {
+    transform: scale(1.1) rotate(-3deg);
+}
+
+.resume-btn:hover { background: #e6c84f; }
+
+.section-title { font-size: 1.8rem; font-weight: 600; margin-bottom: 30px; }
+
+.card {
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: 0.3s ease;
+}
+
+.card:hover { transform: translateY(-6px); }
+
+/* Timeline */
+.timeline { position: relative; margin-left: 20px; }
+.timeline::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #f4d35e;
+}
+.timeline-item {
+    padding-left: 30px;
+    margin-bottom: 40px;
+    position: relative;
+}
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -9px;
+    top: 5px;
+    width: 18px;
+    height: 18px;
+    background: #c99700;
+    border-radius: 50%;
+}
+
+/* Skills */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+}
+.skill-box {
+    background: #fff9db;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+}
+.skill-box:hover {
+    background: #f4d35e;
+    transform: scale(1.05);
+}
+
+/* Blog thumb */
+.blog-thumb {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+footer {
+    background: #fff9db;
+    padding: 25px 0;
+    text-align: center;
+}
+
+/* ================= MOBILE OPTIMIZATION ================= */
+
+@media (max-width: 768px) {
+
+  html {
+      font-size: 18px;
+  }
+
+  body {
+      font-size: 16px;
+  }
+
+  .hero {
+      min-height: 85vh;
+      padding: 20px;
+  }
+
+  .hero h1 {
+      font-size: 1.9rem;
+      line-height: 1.2;
+  }
+
+  .hero p {
+      font-size: 1rem;
+      padding: 0 10px;
+  }
+
+  .hero img {
+      width: 120px;
+  }
+
+  .section-title {
+      font-size: 1.5rem;
+  }
+
+  .card {
+      padding: 20px !important;
+  }
+
+  .corner-img {
+      width: 70px;
+      height: 70px;
+      bottom: 10px;
+      right: 15px;
+  }
+
+  .timeline {
+      margin-left: 0;
+  }
+
+  .timeline-item {
+      padding-left: 20px;
+  }
+
+  .resume-btn {
+      padding: 10px 20px;
+      font-size: 0.95rem;
+  }
+
+  .container {
+      padding-left: 18px;
+      padding-right: 18px;
+  }
+
+}
+
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+<div class="container">
+<a class="navbar-brand" href="#">𓇢𓆸</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav ms-auto">
+<li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+<li class="nav-item"><a class="nav-link" href="#journey">Journey</a></li>
+<li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+<li class="nav-item"><a class="nav-link" href="#certifications">Certifications</a></li>
+<li class="nav-item"><a class="nav-link" href="#blogs">Blogs</a></li>
+<li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+</ul>
+</div>
+</div>
+</nav>
+
+<section class="hero">
+<div>
+<img src="img/profile.jpeg" alt="Prachi Profile">
+<h1>Hi, I'm <span class="name">Prachi</span></h1>
+<p><p>  I’m a Data Engineer who loves working with data.</p> 
+   I take messy information and turn it into something clear, useful, and reliable. My goal is simple... make your data easy to trust and easy to use.</p>
+<a href="Prachi_Baranwal_Resume.pdf" download>
+  <br><br>
+<button class="resume-btn"><i class="fa-solid fa-download"></i> Download Resume</button>
+</a>
+</div>
+</section>
+
+<section id="about" class="py-5">
+<div class="container">
+<h2 class="section-title">About Me</h2>
+<p>I work as a Data Engineer with 2.6+  years of hands-on experience in Azure Databricks, PySpark & production ETL systems. I enjoy debugging pipelines, optimizing Spark jobs and improving data quality step by step.</p>
+</div>
+</section>
+
+<section id="journey" class="py-5">
+<div class="container">
+<h2 class="section-title">My Journey</h2>
+<div class="timeline">
+
+<div class="timeline-item">
+<h5>Data Engineer • Infinite Computer Solutions</h5>
+<p><small>Aug 2023 – Present • Bengaluru</small></p>
+<p>Designing and managing scalable data pipelines on Azure Databricks. Improving performance, reliability, and data quality for healthcare analytics systems.</p>
+</div>
+
+<div class="timeline-item">
+<h5>Software Engineering Intern • Mobiloitte Technologies</h5>
+<p><small>Feb 2023 – Apr 2023 • Delhi</small></p>
+<p>Worked on data extraction, validation, and basic Python/SQL scripting. Supported teams in cleaning and preparing datasets.</p>
+</div>
+
+<div class="timeline-item">
+<h5>B.Tech – Computer Science</h5>
+<p><small>2019 – 2023 • 8.1 CGPA</small></p>
+<p>Built strong foundations in programming, data systems, and software engineering concepts.</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<section id="skills" class="py-5">
+<div class="container">
+<h2 class="section-title">Skills</h2>
+<p style="max-width:700px;">
+Here’s my little data world — the tools and concepts I use to turn raw information into something meaningful.
+</p>
+
+<div class="row g-4 mt-3">
+
+<div class="col-md-4">
+<div class="card p-4" style="background:#fff9db;">
+<h6 style="color:#c99700;"><i class="fa-solid fa-database"></i> Data Platforms</h6>
+<div class="d-flex flex-wrap gap-2 mt-2">
+<span class="badge bg-light text-dark">Databricks</span>
+<span class="badge bg-light text-dark">Azure Databricks</span>
+<span class="badge bg-light text-dark">Delta Tables</span>
+<span class="badge bg-light text-dark">ADLS</span>
+</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card p-4" style="background:#fff9db;">
+<h6 style="color:#c99700;"><i class="fa-solid fa-gears"></i> Processing Engine</h6>
+<div class="d-flex flex-wrap gap-2 mt-2">
+<span class="badge bg-light text-dark">Apache Spark</span>
+<span class="badge bg-light text-dark">PySpark</span>
+<span class="badge bg-light text-dark">Spark SQL</span>
+<span class="badge bg-light text-dark">Auto Loader</span>
+<span class="badge bg-light text-dark">Incremental Loads</span>
+</div>
+</div>
+</div>
+
+<div class="col-md-4">
+<div class="card p-4" style="background:#fff9db;">
+<h6 style="color:#c99700;"><i class="fa-solid fa-code"></i> Programming</h6>
+<div class="d-flex flex-wrap gap-2 mt-2">
+<span class="badge bg-light text-dark">Python</span>
+<span class="badge bg-light text-dark">SQL</span>
+<span class="badge bg-light text-dark">CI/CD</span>
+<span class="badge bg-light text-dark">Git</span>
+<span class="badge bg-light text-dark">Azure DevOps</span>
+</div>
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="card p-4" style="background:#ffffff;">
+<h6 style="color:#c99700;"><i class="fa-solid fa-network-wired"></i> Data Engineering Core</h6>
+<p style="font-size:0.9rem; margin-top:10px;">
+ETL / ELT • Schema Evolution • Data Quality • Reconciliation • Audit Logging • Monitoring • SLA Validation • Lineage • RBAC
+</p>
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="card p-4" style="background:#ffffff;">
+<h6 style="color:#c99700;"><i class="fa-solid fa-brain"></i> Concepts & Ecosystem</h6>
+<p style="font-size:0.9rem; margin-top:10px;">
+Data Modelling • Pipeline Optimization • Hadoop Ecosystem • Kafka (Fundamentals) • Snowflake (Exposure)
+</p>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<section id="certifications" class="py-5">
+<div class="container">
+<h2 class="section-title">Certifications</h2>
+<div class="row g-4">
+
+<div class="col-md-4">
+<a href="https://credentials.databricks.com/e0420d30-75d9-4168-b1f5-67ba9ea04d0e#acc.eO6tv5gS" target="_blank" style="text-decoration:none; color:inherit;">
+<div class="card p-3 text-center" style="background:#fff9db; transition:0.3s ease;">
+<img src="https://api.accredible.com/v1/frontend/credential_website_embed_image/certificate/142306693" alt="Databricks Certificate" style="width:100%; border-radius:12px; margin-bottom:15px; object-fit:cover;">
+<h6 style="font-weight:600;">Databricks Certified Data Engineer Associate</h6>
+<p style="font-size:0.85rem; color:#666;">Click to verify credential</p>
+</div>
+</a>
+</div>
+
+<div class="col-md-4">
+<a href="https://learn.microsoft.com/api/credentials/share/en-in/PrachiBaranwal/7771E403AEECC323?sharingId=9BEB883BCD8AB574" target="_blank" style="text-decoration:none; color:inherit;">
+<div class="card p-3 text-center" style="background:#fff9db;">
+<img src="img/micro.jpg" alt="Azure Certificate" style="width:100%; border-radius:10px; margin-bottom:15px;">
+<h6>Microsoft Azure DP-900</h6>
+<p style="font-size:0.85rem;">Azure Fundamentals</p>
+</div>
+</a>
+</div>
+
+<div class="col-md-4">
+<a href="https://coursera.org/share/1340b4877ca4c8481b2bb02c9d3f49c5" target="_blank" style="text-decoration:none; color:inherit;">
+<div class="card p-3 text-center" style="background:#fff9db;">
+<img src="img/Coursera.jpg" alt="Google Certificate" style="width:100%; border-radius:10px; margin-bottom:15px;">
+<h6>Google Data Foundations</h6>
+<p style="font-size:0.85rem;">Data, Data Everywhere</p>
+</div>
+</a>
+</div>
+
+</div>
+</div>
+</section>
+
+<section id="blogs" class="py-5">
+<div class="container">
+<h2 class="section-title">Blogs</h2>
+<div class="row g-4">
+
+<div class="col-md-4">
+  <a href="blog1.html" style="text-decoration:none; color:inherit;">
+    <div class="card blog-card position-relative p-4"
+         style="cursor:pointer; overflow:hidden;">
+
+      <h5>Optimizing Databricks Pipelines</h5>
+      <p style="font-size:0.9rem;">
+        Lessons from production workloads.
+      </p>
+<br><br><br><br>
+      <img src="img/l1 (1).png"
+           alt="Blog image"
+           class="corner-img">
+    </div>
+  </a>
+</div>
+
+<div class="col-md-4">
+  <a href="blog2.html" style="text-decoration:none; color:inherit;">
+    <div class="card blog-card position-relative p-4"
+         style="cursor:pointer; overflow:hidden;">
+
+      <h5>Medallion Architecture</h5>
+      <p style="font-size:0.9rem;">
+        Bronze, Silver & Gold explained practically.
+      </p>
+<br><br><br><br>
+      <img src="img/l1 (2).png"
+           alt="Blog image"
+           class="corner-img">
+    </div>
+  </a>
+</div>
+
+<div class="col-md-4">
+  <a href="blog3.html" style="text-decoration:none; color:inherit;">
+    <div class="card blog-card position-relative p-4"
+         style="cursor:pointer; overflow:hidden;">
+
+      <h5>Spark Performance Lessons</h5>
+      <p style="font-size:0.9rem;">
+        Mistakes & optimizations from real cases.
+      </p>
+<br><br><br><br>
+      <img src="img/l1 (3).png"
+           alt="Blog image"
+           class="corner-img">
+    </div>
+  </a>
+</div>
+
+</div>
+</div>
+</section>
+
+<section id="contact" class="py-5">
+<div class="container">
+<h2 class="section-title">Contact Me</h2>
+<div class="card p-4">
+<form id="contactForm">
+<div class="mb-3">
+<input type="text" id="name" class="form-control" placeholder="Your Name" required>
+</div>
+<div class="mb-3">
+<input type="email" id="email" class="form-control" placeholder="Your Email" required>
+</div>
+<div class="mb-3">
+<textarea id="message" class="form-control" rows="4" placeholder="Your Message" required></textarea>
+</div>
+<button type="submit" class="resume-btn">Send Message</button>
+</form>
+</div>
+</div>
+</section>
+
+<footer>
+<p>© 2026 Prachi Baranwal • Data Engineer</p>
+<p>
+  <a href="https://www.linkedin.com/in/prachi-baranwal-46446220a" target="_blank" style="text-decoration:none; color:#c99700; font-weight:500;">
+    <i class="fa-brands fa-linkedin"></i> Connect with me on LinkedIn
+  </a>
+</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ===== GOOGLE SHEETS FORM SUBMISSION =====
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwnX8OM63kFNmKTUkoZK9xD7o0jf0NagjpsAFpuNBgBfe3uNainoaRnORoXyefjcuKY/exec';
+
+const form = document.getElementById('contactForm');
+
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const data = {
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    message: document.getElementById('message').value
+  };
+
+  try {
+    await fetch(scriptURL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    showPopup("✨ Message sent successfully! Thanks for reaching out. I'll connect with you soon.");
+    form.reset();
+
+  } catch (error) {
+    showPopup("⚠️ Something went wrong. Please try again.");
+  }
+});
+
+// ===== CUSTOM POPUP =====
+function showPopup(message) {
+  const popup = document.createElement('div');
+  popup.innerHTML = `
+    <div style="position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:9999;">
+      <div style="background:#fff9db;padding:30px;border-radius:16px;text-align:center;max-width:400px;box-shadow:0 20px 50px rgba(0,0,0,0.15);">
+        <p style="margin-bottom:20px;font-weight:500;">${message}</p>
+        <button onclick="this.closest('div').parentElement.remove()" style="background:#f4d35e;border:none;padding:8px 18px;border-radius:20px;">OK</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(popup);
+}
+
+// ===== Auto close navbar on mobile click =====
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', () => {
+    const navbarCollapse = document.getElementById('navbarNav');
+    const bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+    if (bsCollapse) bsCollapse.hide();
+  });
+});
+</script>
+
+</body>
+</html>
